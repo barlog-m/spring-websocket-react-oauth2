@@ -1,0 +1,3 @@
+rootProject.name = 'spring-websocket-react-oauth2'
+include 'server'
+include 'ui'

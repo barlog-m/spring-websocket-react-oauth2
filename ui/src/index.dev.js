@@ -1,0 +1,58 @@
+import "./css/app.css";
+import "./css/bootstrap.css";
+
+import "react-hot-loader/patch";
+import "webpack/hot/only-dev-server";
+import "webpack-dev-server/client?http://localhost:8080";
+
+import React from "react";
+import {render} from "react-dom";
+import {createStore, combineReducers, applyMiddleware, compose} from "redux";
+import {Provider} from "react-redux";
+import thunkMiddleware from "redux-thunk";
+
+import Router from "react-router/lib/Router";
+import browserHistory from "react-router/lib/browserHistory";
+import {syncHistoryWithStore, routerReducer, routerMiddleware} from "react-router-redux";
+
+import createLogger from "redux-logger";
+import {AppContainer} from "react-hot-loader";
+
+import reducers from "./app/reducers";
+import createRoutes from "./app/routes";
+
+import authStateMiddleware from "./app/middleware/auth-state";
+
+const rootReducer = combineReducers({
+	...reducers,
+	routing: routerReducer
+});
+
+const logger = createLogger();
+
+const middleware = applyMiddleware(
+	routerMiddleware(browserHistory),
+	thunkMiddleware,
+//	logger,
+	authStateMiddleware
+);
+
+const store = createStore(
+	rootReducer,
+	compose(middleware,
+		window.__REDUX_DEVTOOLS_EXTENSION__ &&
+		window.__REDUX_DEVTOOLS_EXTENSION__())
+);
+
+const history = syncHistoryWithStore(browserHistory, store);
+
+const routes = createRoutes(store);
+
+render(
+	<AppContainer>
+		<Provider store={store}>
+			<Router routes={routes} history={history}/>
+		</Provider>
+	</AppContainer>,
+	document.getElementById("root")
+);

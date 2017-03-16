@@ -1,0 +1,8 @@
+allprojects {
+	group 'websocket-react'
+	version '0.1-SNAPSHOT'
+}
+
+wrapper {
+	gradleVersion '3.4.1'
+}

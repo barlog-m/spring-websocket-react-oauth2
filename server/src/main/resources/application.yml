@@ -1,0 +1,34 @@
+app:
+  name: app
+  description: "websocket-react"
+  version: "0.0.1"
+
+api:
+  version: v1
+  prefix: /api/${api.version}
+
+authentication:
+  key: "d3b6681900dd39068483c3a0decad73fbe42acb363fb55babb87a74b22d6aac5"
+  access_token_validity_seconds: 300
+  refresh_token_validity_seconds: 2592000
+
+spring:
+  main.banner-mode: "off"
+  application.name: ${app.name}
+  output.ansi.enabled: never
+
+server:
+  port: ${port:8081}
+  use-forward-headers: true
+  compression:
+    enabled: true
+    min-response-size: 8192
+    mime-types:
+      - application/json
+      - text/html
+      - text/css
+      - application/javascript
+
+logging:
+  level:
+    root: INFO

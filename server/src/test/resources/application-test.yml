@@ -1,0 +1,11 @@
+app:
+  name: foo
+  description: bar
+  version: "0.0.1"
+
+api.prefix: /api
+
+logging:
+  level:
+    root: INFO
+    org.springframework.security: TRACE
