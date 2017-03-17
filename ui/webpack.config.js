@@ -71,15 +71,10 @@ const config = {
 		]
 	},
 	devServer: {
-		contentBase: "./src",
 		port: 8080,
 
 		historyApiFallback: true,
 		hot: true,
-		inline: true,
-		stats: {
-			colors: true
-		},
 
 		proxy: {
 			"/api/": {
@@ -89,6 +84,13 @@ const config = {
 			},
 			"/oauth/": {
 				target: "http://localhost:8081/oauth",
+				secure: false,
+				prependPath: false
+			},
+			"/ws/": {
+				target: "ws://localhost:8081/ws",
+				changeOrigin: true,
+				ws: true,
 				secure: false,
 				prependPath: false
 			}

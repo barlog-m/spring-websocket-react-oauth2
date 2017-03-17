@@ -14,7 +14,6 @@ class MessagesReceiver {
 
 		console.debug("MessagesReceiver: ws config");
 
-		this.url = "ws://localhost:8081/ws/foo";
 		this.options = {debug: false, protocols: webstomp.VERSIONS.supportedProtocols()};
 
 		this.getConnectionPromise.bind(this);
@@ -22,9 +21,10 @@ class MessagesReceiver {
 		this.connection = state.LOST;
 	}
 
-	connect(token) {
-		this.token = token;
+	connect(host, token) {
 		this.onConnectionInProgress();
+		this.host = host;
+		this.token = token;
 		backoff(
 			() => this.getConnectionPromise(),
 			{attempts: 32, minDelay: 1000, maxDelay: 20000})
@@ -48,10 +48,8 @@ class MessagesReceiver {
 			console.debug("MessagesReceiver: ws connect begin");
 			this.connection = state.IN_PROGRESS;
 
-			console.debug("MessagesReceiver: token ", this.token);
-			const url = `${this.url}?token=${this.token}`;
-			console.debug("MessagesReceiver: url ", this.url);
-			this.client = webstomp.over(new WebSocket(url), this.options);
+			this.prepareUrl();
+			this.client = webstomp.over(new WebSocket(this.url), this.options);
 
 			this.client.connect({}, (user) => {
 				console.debug("MessagesReceiver: stomp connected", user);
@@ -72,6 +70,15 @@ class MessagesReceiver {
 				}
 			});
 		});
+	}
+
+	prepareUrl() {
+		console.debug("MessagesReceiver: host", this.host);
+		console.debug("MessagesReceiver: token", this.token);
+
+		this.url = `ws://${this.host}/ws/foo?token=${this.token}`;
+
+		console.debug("MessagesReceiver: url", this.url);
 	}
 }
 

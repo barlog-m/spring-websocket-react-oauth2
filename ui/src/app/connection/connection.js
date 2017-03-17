@@ -63,7 +63,7 @@ class Connection extends Component {
 
 	connect() {
 		const token = localStorage.getItem("access_token");
-		this.messagesWorker.postMessage([workerMessageType.CONNECT, token]);
+		this.messagesWorker.postMessage([workerMessageType.CONNECT, window.location.host, token]);
 	}
 
 	disconnect() {
