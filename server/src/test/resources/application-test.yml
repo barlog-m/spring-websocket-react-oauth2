@@ -8,3 +8,4 @@ api.prefix: /api
 logging:
   level:
     root: INFO
+    org.springframework.security: TRACE

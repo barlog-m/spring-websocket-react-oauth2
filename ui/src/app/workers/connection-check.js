@@ -1,3 +1,5 @@
+import * as connectionSettings from "../config/connection";
+
 setInterval(() => {
 	postMessage([]);
-}, 60000);
+}, connectionSettings.CONNECTION_CHECK_PERIOD);

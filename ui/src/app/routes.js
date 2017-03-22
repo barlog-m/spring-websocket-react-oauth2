@@ -1,7 +1,6 @@
 import React from "react";
 
-import Route from "react-router/lib/Route";
-import IndexRedirect from "react-router/lib/IndexRedirect";
+import {Route, IndexRedirect} from "react-router";
 
 import axiosConfig from "./config/axios";
 import authRequired from "./auth-required";

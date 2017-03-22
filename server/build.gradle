@@ -48,7 +48,6 @@ repositories {
 }
 
 configurations {
-	all*.exclude module : 'spring-boot-starter-logging'
 	all*.exclude module : 'spring-boot-starter-tomcat'
 }
 
@@ -60,8 +59,6 @@ dependencies {
 
 	compile 'com.fasterxml.jackson.module:jackson-module-kotlin'
 	compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
-
-	compile 'org.springframework.boot:spring-boot-starter-log4j2'
 
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile 'org.springframework.boot:spring-boot-starter-undertow'

@@ -1,6 +1,6 @@
 package li.barlog.app
 
-import li.barlog.app.config.AppConfig
+import li.barlog.app.config.ITConfig
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner
 
 @RunWith(SpringRunner::class)
 @SpringBootTest(
-	classes = arrayOf(AppConfig::class),
+	classes = arrayOf(ITConfig::class),
 	webEnvironment = WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 class AppIT {

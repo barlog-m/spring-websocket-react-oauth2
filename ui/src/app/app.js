@@ -5,7 +5,7 @@ import Spinner from "./components/spinner";
 import Error from "./containers/error";
 import Menu from "./menu/menu";
 
-import Connection from "./connection/connection";
+import Connection from "./ws/connection";
 
 const App = props => (
 	<div>

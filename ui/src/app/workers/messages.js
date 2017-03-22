@@ -22,7 +22,11 @@ const onDisconnected = () => {
 };
 
 const messagesReceiver = new MessagesReceiver(
-	onMessageReceived, onConnected, onDisconnected, onConnectionInProgress);
+	onMessageReceived,
+	onConnected,
+	onDisconnected,
+	onConnectionInProgress
+);
 
 onmessage = (e) => {
 	console.debug("MessagesWorker->onMessage", e);
@@ -32,7 +36,7 @@ onmessage = (e) => {
 			messagesReceiver.connect(e.data[1], e.data[2]);
 			break;
 		case types.DISCONNECT:
-			messagesReceiver.disconnect();
+			messagesReceiver.disconnectStomp();
 			break;
 	}
 };

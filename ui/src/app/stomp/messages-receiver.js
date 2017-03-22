@@ -1,6 +1,7 @@
 import webstomp from "webstomp-client";
+
 import {backoff} from "../utils/backoff";
-import * as state from "../connection/state";
+import * as state from "../ws/state";
 
 class MessagesReceiver {
 	constructor(onMessageReceivedCallback,
@@ -14,17 +15,22 @@ class MessagesReceiver {
 
 		console.debug("MessagesReceiver: ws config");
 
-		this.options = {debug: false, protocols: webstomp.VERSIONS.supportedProtocols()};
+		this.options = {
+			debug: false,
+			protocols: webstomp.VERSIONS.supportedProtocols()
+		};
 
 		this.getConnectionPromise.bind(this);
+		this.disconnectStomp.bind(this);
 
 		this.connection = state.LOST;
 	}
 
-	connect(host, token) {
+	connect(host, access_token) {
 		this.onConnectionInProgress();
 		this.host = host;
-		this.token = token;
+		this.token = access_token;
+
 		backoff(
 			() => this.getConnectionPromise(),
 			{attempts: 32, minDelay: 1000, maxDelay: 20000})
@@ -35,12 +41,18 @@ class MessagesReceiver {
 			});
 	}
 
-	disconnect() {
-		this.client.disconnect(() => {
-			console.log("MessagesReceiver: disconnected");
-			this.connection = state.LOST;
-			this.onDisconnected();
-		});
+	disconnectStomp() {
+		if (this.client) {
+			this.client.disconnect(() => {
+				console.debug("MessagesReceiver: disconnected");
+				this.resetConnectionState();
+			});
+		}
+	}
+
+	resetConnectionState() {
+		this.connection = state.LOST;
+		this.onDisconnected();
 	}
 
 	getConnectionPromise() {
@@ -73,10 +85,11 @@ class MessagesReceiver {
 	}
 
 	prepareUrl() {
-		console.debug("MessagesReceiver: host", this.host);
-		console.debug("MessagesReceiver: token", this.token);
+		console.debug("MessagesReceiver: prepare url with token", this.token);
+		console.debug("MessagesReceiver: prepare url for host", this.host);
 
-		this.url = `ws://${this.host}/ws/foo?token=${this.token}`;
+		//this.url = `ws://localhost:8081/ws/foo?access_token=${this.token}`;
+		this.url = `ws://${this.host}/ws/foo?access_token=${this.token}`;
 
 		console.debug("MessagesReceiver: url", this.url);
 	}

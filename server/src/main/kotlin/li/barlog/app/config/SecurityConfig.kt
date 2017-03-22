@@ -23,7 +23,7 @@ open class SecurityConfig : WebSecurityConfigurerAdapter() {
 		http
 			.requestMatchers()
 				.antMatchers("/oauth/authorize")
-				.regexMatchers("/(?!api)", "/(?!oauth)", "/(?!ws)")
+				.regexMatchers("/(?!oauth)", "/(?!api)", "/(?!ws)")
 				.antMatchers("/*")
 			.and()
 				.authorizeRequests()

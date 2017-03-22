@@ -1,7 +1,7 @@
-package app.ws
+package li.barlog.app.ws
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import li.barlog.app.App
+import li.barlog.app.config.AppConfig
 import li.barlog.app.oauth.createAuthUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -25,7 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired
 
 @RunWith(SpringRunner::class)
 @SpringBootTest(
-	classes = arrayOf(App::class),
+	classes = arrayOf(AppConfig::class),
 	webEnvironment = WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 class MessagesIT {
@@ -38,7 +38,7 @@ class MessagesIT {
 	private lateinit var token: String
 
 	private val url: String
-		get() = "ws://localhost:$port/ws/foo?token=$token"
+		get() = "ws://localhost:$port/ws/foo?access_token=$token"
 
 	@Before
 	fun init() {

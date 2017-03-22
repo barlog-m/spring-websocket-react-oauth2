@@ -1,5 +1,5 @@
 import * as types from "../actions/types";
-import * as connectionState from "../connection/state";
+import * as connectionState from "../ws/state";
 
 const connection = (state = connectionState.LOST, action) => {
 	switch (action.type) {
