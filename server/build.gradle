@@ -1,12 +1,14 @@
 buildscript {
-	ext.kotlinVer = '1.1.0'
-	ext.springBootVer = '1.5.2.RELEASE'
-	ext.propdepsPluginVer = '0.0.7'
-	ext.kotlinLoggingVer = '1.4.2'
-	ext.websocketApiVer = '1.1'
-	ext.apacheHttpClientVer = '4.5.3'
-	ext.jsonPathVer = '2.2.0'
-	ext.okHttpVer = '3.6.0'
+	ext {
+		kotlinVer = '1.1.1'
+		springBootVer = '1.5.2.RELEASE'
+		propdepsPluginVer = '0.0.7'
+		kotlinLoggingVer = '1.4.2'
+		websocketApiVer = '1.1'
+		apacheHttpClientVer = '4.5.3'
+		jsonPathVer = '2.2.0'
+		okHttpVer = '3.6.0'
+	}
 
 	repositories {
 		jcenter()
