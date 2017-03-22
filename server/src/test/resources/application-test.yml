@@ -5,6 +5,8 @@ app:
 
 api.prefix: /api
 
+ws.prefix: /api
+
 logging:
   level:
     root: INFO

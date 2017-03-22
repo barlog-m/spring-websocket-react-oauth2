@@ -88,8 +88,8 @@ class MessagesReceiver {
 		console.debug("MessagesReceiver: prepare url with token", this.token);
 		console.debug("MessagesReceiver: prepare url for host", this.host);
 
-		//this.url = `ws://localhost:8081/ws/foo?access_token=${this.token}`;
-		this.url = `ws://${this.host}/ws/foo?access_token=${this.token}`;
+		//this.url = `ws://localhost:8081/ws/v1/foo?access_token=${this.token}`;
+		this.url = `ws://${this.host}/ws/v1/foo?access_token=${this.token}`;
 
 		console.debug("MessagesReceiver: url", this.url);
 	}

@@ -1,5 +1,6 @@
 package li.barlog.app.config
 
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.messaging.simp.config.MessageBrokerRegistry
@@ -12,6 +13,9 @@ import org.springframework.web.socket.server.standard.ServletServerContainerFact
 @EnableWebSocketMessageBroker
 open class WebSocketConfig : AbstractWebSocketMessageBrokerConfigurer() {
 	private val BUFFER_SIZE = 65535
+
+	@Value("\${ws.prefix}")
+	private val wsPrefix = ""
 
 	@Bean
 	open fun createWebSocketContainer(): ServletServerContainerFactoryBean {
@@ -27,6 +31,6 @@ open class WebSocketConfig : AbstractWebSocketMessageBrokerConfigurer() {
 	}
 
 	override fun registerStompEndpoints(registry: StompEndpointRegistry) {
-		registry.addEndpoint("/ws/foo").setAllowedOrigins("*")
+		registry.addEndpoint("$wsPrefix/foo").setAllowedOrigins("*")
 	}
 }

@@ -8,6 +8,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment
 import org.springframework.http.MediaType
@@ -40,6 +41,9 @@ class AuthTest {
 	@Autowired
 	private lateinit var mapper: ObjectMapper
 
+	@Value("\${api.prefix}")
+	private val apiPrefix = ""
+
 	private lateinit var mvc: MockMvc
 
 	@Before
@@ -65,7 +69,7 @@ class AuthTest {
 	fun postWithoutAuthentication() {
 		mvc
 			.perform(
-				post("/api/test")
+				post("$apiPrefix/test")
 					.accept(MediaType.APPLICATION_JSON_UTF8)
 					.contentType(MediaType.APPLICATION_JSON_UTF8)
 					.with(csrf().asHeader()))
@@ -78,7 +82,7 @@ class AuthTest {
 
 		val resultBody = mvc
 			.perform(
-				post("/api/test")
+				post("$apiPrefix/test")
 					.accept(MediaType.APPLICATION_JSON_UTF8)
 					.contentType(MediaType.APPLICATION_JSON_UTF8)
 					.header("Authorization", "Bearer $access_token")
@@ -106,7 +110,7 @@ class AuthTest {
 
 		val resultBody = mvc
 			.perform(
-				post("/api/test")
+				post("$apiPrefix/test")
 					.accept(MediaType.APPLICATION_JSON_UTF8)
 					.contentType(MediaType.APPLICATION_JSON_UTF8)
 					.header("Authorization", "Bearer $access_token")

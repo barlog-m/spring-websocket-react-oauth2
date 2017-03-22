@@ -7,6 +7,7 @@ import org.junit.Assert.assertFalse
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.context.embedded.LocalServerPort
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment
@@ -37,6 +38,9 @@ class AuthIT {
 	@LocalServerPort
 	private lateinit var port: Integer
 
+	@Value("\${api.prefix}")
+	private val apiPrefix = ""
+
 	@Test
 	fun authentication() {
 		val url = createAuthUrl(port.toInt(), "foo", "bar")
@@ -51,7 +55,7 @@ class AuthIT {
 
 	@Test
 	fun postWithoutAuthentication() {
-		val response = restTemplate.postForEntity("/api/test", null, String::class.java)
+		val response = restTemplate.postForEntity("$apiPrefix/test", null, String::class.java)
 		assertEquals(HttpStatus.UNAUTHORIZED, response.statusCode)
 	}
 
@@ -61,7 +65,7 @@ class AuthIT {
 
 		val request = createRequestWithToken(access_token)
 
-		val response = restTemplate.exchange("/api/test", HttpMethod.POST, request, String::class.java)
+		val response = restTemplate.exchange("$apiPrefix/test", HttpMethod.POST, request, String::class.java)
 		assertEquals(HttpStatus.OK, response.statusCode)
 
 		val map = mapper.readValue(response.body, Map::class.java)
@@ -79,7 +83,7 @@ class AuthIT {
 		val new_access_token = tokenMap["access_token"].toString()
 
 		val request = createRequestWithToken(new_access_token)
-		val response = restTemplate.exchange("/api/test", HttpMethod.POST, request, String::class.java)
+		val response = restTemplate.exchange("$apiPrefix/test", HttpMethod.POST, request, String::class.java)
 		assertEquals(HttpStatus.OK, response.statusCode)
 
 		val map = mapper.readValue(response.body, Map::class.java)

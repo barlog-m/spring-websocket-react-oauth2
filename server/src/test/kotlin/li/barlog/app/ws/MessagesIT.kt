@@ -21,6 +21,7 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.TimeUnit
 import org.junit.Before
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 
 
 @RunWith(SpringRunner::class)
@@ -32,13 +33,16 @@ class MessagesIT {
 	@Autowired
 	private lateinit var mapper: ObjectMapper
 
+	@Value("\${ws.prefix}")
+	private val wsPrefix = ""
+
 	@LocalServerPort
 	private lateinit var port: Integer
 
 	private lateinit var token: String
 
 	private val url: String
-		get() = "ws://localhost:$port/ws/foo?access_token=$token"
+		get() = "ws://localhost:$port/$wsPrefix/foo?access_token=$token"
 
 	@Before
 	fun init() {

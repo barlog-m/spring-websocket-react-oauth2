@@ -5,6 +5,7 @@ import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.http.HttpEntity
@@ -25,11 +26,14 @@ class HelloControllerIT {
 	@Autowired
 	lateinit var restTemplate: TestRestTemplate
 
+	@Value("\${api.prefix}")
+	private val apiPrefix = ""
+
 	@Test
 	fun greetingsMessage() {
 		val request = HttpEntity<Void>(headers())
 
-		val response = restTemplate.exchange("/api/home/greeting_message", HttpMethod.GET,
+		val response = restTemplate.exchange("$apiPrefix/home/greeting_message", HttpMethod.GET,
 			request, String::class.java)
 		Assert.assertEquals(HttpStatus.OK, response.statusCode)
 		Assert.assertEquals("Hello", response.body)
