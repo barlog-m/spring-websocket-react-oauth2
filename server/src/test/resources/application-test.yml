@@ -5,7 +5,7 @@ app:
 
 api.prefix: /api
 
-ws.prefix: /api
+ws.prefix: /ws
 
 logging:
   level:
