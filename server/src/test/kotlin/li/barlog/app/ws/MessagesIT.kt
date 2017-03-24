@@ -23,7 +23,6 @@ import org.junit.Before
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 
-
 @RunWith(SpringRunner::class)
 @SpringBootTest(
 	classes = arrayOf(AppConfig::class),

@@ -5,4 +5,4 @@ const receive = payload => ({
 	payload
 });
 
-export const addMessage = m => dispatch => dispatch(receive(m))
+export const addMessage = m => dispatch => dispatch(receive(m));

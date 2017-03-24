@@ -2,7 +2,7 @@ import * as types from "../actions/types";
 
 const intiState = () => ({
 	greetingMessage: ""
-})
+});
 
 const home = (state = intiState(), action) => {
 	switch (action.type) {
