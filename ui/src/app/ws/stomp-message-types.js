@@ -4,4 +4,4 @@ export const CONNECTED = "CONNECTED";
 export const DISCONNECT = "DISCONNECT";
 export const DISCONNECTED = "DISCONNECTED";
 
-export const MESSAGE = "MESSAGE";
+export const DATA = "DATA";

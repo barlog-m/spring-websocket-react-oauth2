@@ -1,9 +1,9 @@
-import MessagesReceiver from "../stomp/messages-receiver";
-import * as types from "./types";
+import StompClient from "./stomp-client";
+import * as types from "./stomp-message-types";
 
-const onMessageReceived = message => {
-	console.debug("MessagesWorker->onMessageReceived");
-	postMessage([types.MESSAGE, message]);
+const onDataReceivedCallback = data => {
+	console.debug("MessagesWorker->onDataReceivedCallback");
+	postMessage([types.DATA, data]);
 };
 
 const onConnectionInProgress = () => {
@@ -21,8 +21,8 @@ const onDisconnected = () => {
 	postMessage([types.DISCONNECTED]);
 };
 
-const messagesReceiver = new MessagesReceiver(
-	onMessageReceived,
+const messagesReceiver = new StompClient(
+    onDataReceivedCallback,
 	onConnected,
 	onDisconnected,
 	onConnectionInProgress

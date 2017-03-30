@@ -1,19 +1,20 @@
 import webstomp from "webstomp-client";
 
 import {backoff} from "../utils/backoff";
-import * as state from "../ws/state";
+import * as connectionState from "./connection-state";
+import * as dataTypes from "./stomp-data-types";
 
-class MessagesReceiver {
-	constructor(onMessageReceivedCallback,
+class StompClient {
+	constructor(onDataReceivedCallback,
 				onConnected,
 				onDisconnected,
 				onConnectionInProgress) {
-		this.onMessageReceivedCallback = onMessageReceivedCallback;
+		this.onDataReceivedCallback = onDataReceivedCallback;
 		this.onConnectionInProgress = onConnectionInProgress;
 		this.onConnected = onConnected;
 		this.onDisconnected = onDisconnected;
 
-		console.debug("MessagesReceiver: ws config");
+		console.debug("StompClient: ws config");
 
 		this.options = {
 			debug: false,
@@ -23,7 +24,7 @@ class MessagesReceiver {
 		this.getConnectionPromise.bind(this);
 		this.disconnectStomp.bind(this);
 
-		this.connection = state.LOST;
+		this.connection = connectionState.LOST;
 	}
 
 	connect(host, access_token) {
@@ -36,7 +37,7 @@ class MessagesReceiver {
 			{attempts: 32, minDelay: 1000, maxDelay: 20000})
 			.then(() => this.onConnected())
 			.catch((err) => {
-				console.log(`MessagesReceiver: all reconnect attempts ended with error: ${err}`);
+				console.log(`StompClient: all reconnect attempts ended with error: ${err}`);
 				this.onDisconnected();
 			});
 	}
@@ -44,38 +45,34 @@ class MessagesReceiver {
 	disconnectStomp() {
 		if (this.client) {
 			this.client.disconnect(() => {
-				console.debug("MessagesReceiver: disconnected");
+				console.debug("StompClient: disconnected");
 				this.resetConnectionState();
 			});
 		}
 	}
 
 	resetConnectionState() {
-		this.connection = state.LOST;
+		this.connection = connectionState.LOST;
 		this.onDisconnected();
 	}
 
 	getConnectionPromise() {
 		return new Promise((resolve, reject) => {
-			console.debug("MessagesReceiver: ws connect begin");
-			this.connection = state.IN_PROGRESS;
+			console.debug("StompClient: ws connect begin");
+			this.connection = connectionState.IN_PROGRESS;
 
 			this.prepareUrl();
 			this.client = webstomp.over(new WebSocket(this.url), this.options);
 
 			this.client.connect({}, (user) => {
-				console.debug("MessagesReceiver: stomp connected", user);
-				this.connection = state.ESTABLISHED;
+				console.debug("StompClient: stomp connected", user);
+				this.connection = connectionState.ESTABLISHED;
 				resolve();
-				this.client.subscribe("/messages", data => {
-					const message = JSON.parse(data.body);
-					this.onMessageReceivedCallback(message);
-					console.debug("MessagesReceiver: stomp message received", message);
-				});
+				this.subscribe();
 			}, (err) => {
-				console.error("MessagesReceiver: stomp error", err);
-				console.debug("MessagesReceiver: connection state", this.connection);
-				if (this.connection === state.ESTABLISHED) {
+				console.error("StompClient: stomp error", err);
+				console.debug("StompClient: connection state", this.connection);
+				if (this.connection === connectionState.ESTABLISHED) {
 					this.onDisconnected();
 				} else {
 					reject(err);
@@ -84,15 +81,23 @@ class MessagesReceiver {
 		});
 	}
 
+	subscribe() {
+		this.client.subscribe("/messages", data => {
+			const message = JSON.parse(data.body);
+			this.onDataReceivedCallback([dataTypes.MESSAGE, message]);
+			console.debug("StompClient: stomp message received", message);
+		});
+	}
+
 	prepareUrl() {
-		console.debug("MessagesReceiver: prepare url with token", this.token);
-		console.debug("MessagesReceiver: prepare url for host", this.host);
+		console.debug("StompClient: prepare url with token", this.token);
+		console.debug("StompClient: prepare url for host", this.host);
 
 		//this.url = `ws://localhost:8081/ws/v1/foo?access_token=${this.token}`;
 		this.url = `ws://${this.host}/ws/v1/foo?access_token=${this.token}`;
 
-		console.debug("MessagesReceiver: url", this.url);
+		console.debug("StompClient: url", this.url);
 	}
 }
 
-export default MessagesReceiver;
+export default StompClient;

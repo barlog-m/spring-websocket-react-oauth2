@@ -1,15 +1,16 @@
 import React, {PropTypes, Component} from "react";
 import {connect} from "react-redux";
 
-import ConnectionCheckWorker from "worker-loader!../workers/connection-check.js";
-import MessagesWorker from "worker-loader!../workers/messages.js";
+import ConnectionCheckWorker from "worker-loader!./worker-connection-check.js";
+import StompMessagesWorker from "worker-loader!./worker-stomp-messages.js";
 import * as connectionActions from "../actions/connection";
 import * as messagesActions from "../actions/messages";
 import * as authActions from "../actions/auth";
-import * as workerMessageType from "../workers/types";
+import * as stompMessageTypes from "./stomp-message-types";
+import * as dataTypes from "./stomp-data-types";
 import * as tokenUtils from "../token";
 
-import * as connectionState from "./state";
+import * as connectionState from "./connection-state";
 
 class Connection extends Component {
 	constructor(props) {
@@ -38,7 +39,7 @@ class Connection extends Component {
 
 	initMessagesWorker() {
 		console.debug("Connection->initMessagesWorker");
-		this.messagesWorker = new MessagesWorker();
+		this.messagesWorker = new StompMessagesWorker();
 		this.messagesWorker.onmessage = this.onMessagesWorkerMessage.bind(this);
 		this.onConnectionCheckWorker();
 	}
@@ -55,17 +56,26 @@ class Connection extends Component {
 	onMessagesWorkerMessage(e) {
 		console.debug("Connection->onMessagesWorkerMessage: type", e.data[0]);
 		switch (e.data[0]) {
-			case workerMessageType.MESSAGE:
-				this.props.addMessage(e.data[1]);
+			case stompMessageTypes.DATA:
+				this.processData(e.data[1]);
 				break;
-			case workerMessageType.CONNECTION_IN_PROGRESS:
+			case stompMessageTypes.CONNECTION_IN_PROGRESS:
 				this.props.setConnectionInProgress();
 				break;
-			case workerMessageType.CONNECTED:
+			case stompMessageTypes.CONNECTED:
 				this.props.setConnectionEstablished();
 				break;
-			case workerMessageType.DISCONNECTED:
+			case stompMessageTypes.DISCONNECTED:
 				this.props.setConnectionLost();
+				break;
+		}
+	}
+
+	processData(data) {
+		switch (data[0]) {
+			case dataTypes.MESSAGE:
+				console.debug("Connection->processMessage deal state:", data[1]);
+				this.props.addMessage(data[1]);
 				break;
 		}
 	}
@@ -76,7 +86,7 @@ class Connection extends Component {
 			.then(access_token => {
 				console.debug("Connection->connect: token refreshed");
 				this.messagesWorker.postMessage(
-					[workerMessageType.CONNECT, window.location.host, access_token]);
+					[stompMessageTypes.CONNECT, window.location.host, access_token]);
 			})
 			.catch(error => {
 				console.debug("Connection->connect: error", error);
@@ -86,7 +96,7 @@ class Connection extends Component {
 
 	disconnect() {
 		console.debug("Connection->disconnect");
-		this.messagesWorker.postMessage([workerMessageType.DISCONNECT]);
+		this.messagesWorker.postMessage([stompMessageTypes.DISCONNECT]);
 	}
 
 	render() {
