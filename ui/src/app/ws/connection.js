@@ -1,8 +1,8 @@
 import React, {PropTypes, Component} from "react";
 import {connect} from "react-redux";
 
-import ConnectionCheckWorker from "worker-loader!./worker-connection-check.js";
-import StompMessagesWorker from "worker-loader!./worker-stomp-messages.js";
+import ConnectionCheckWorker from "worker-loader?name=js/connection-check.[hash].js!./worker-connection-check.js";
+import StompMessagesWorker from "worker-loader?name=js/stomp-messages.[hash].js!./worker-stomp-messages.js";
 import * as connectionActions from "../actions/connection";
 import * as messagesActions from "../actions/messages";
 import * as authActions from "../actions/auth";
