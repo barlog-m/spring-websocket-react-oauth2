@@ -74,7 +74,7 @@ class Connection extends Component {
 	processData(data) {
 		switch (data[0]) {
 			case dataTypes.MESSAGE:
-				console.debug("Connection->processMessage deal state:", data[1]);
+				console.debug("Connection->processData deal state:", data[1]);
 				this.props.addMessage(data[1]);
 				break;
 		}
