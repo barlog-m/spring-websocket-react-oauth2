@@ -1,8 +1,8 @@
 import React, {PropTypes, Component} from "react";
 import {connect} from "react-redux";
 
-import ConnectionCheckWorker from "worker-loader!./worker-connection-check.js";
-import StompMessagesWorker from "worker-loader!./worker-stomp-messages.js";
+import ConnectionCheckWorker from "worker-loader?name=js/connection-check.[hash].js!./worker-connection-check.js";
+import StompMessagesWorker from "worker-loader?name=js/stomp-messages.[hash].js!./worker-stomp-messages.js";
 import * as connectionActions from "../actions/connection";
 import * as messagesActions from "../actions/messages";
 import * as authActions from "../actions/auth";
@@ -74,7 +74,7 @@ class Connection extends Component {
 	processData(data) {
 		switch (data[0]) {
 			case dataTypes.MESSAGE:
-				console.debug("Connection->processMessage deal state:", data[1]);
+				console.debug("Connection->processData deal state:", data[1]);
 				this.props.addMessage(data[1]);
 				break;
 		}

@@ -37,7 +37,7 @@ class StompClient {
 			{attempts: 32, minDelay: 1000, maxDelay: 20000})
 			.then(() => this.onConnected())
 			.catch((err) => {
-				console.log(`StompClient: all reconnect attempts ended with error: ${err}`);
+				console.debug(`StompClient: all reconnect attempts ended with error: ${err}`);
 				this.onDisconnected();
 			});
 	}
