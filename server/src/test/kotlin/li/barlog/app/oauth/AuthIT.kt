@@ -1,7 +1,7 @@
 package li.barlog.app.oauth
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import li.barlog.app.TestController
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Test
@@ -36,14 +36,14 @@ class AuthIT {
 	private lateinit var restTemplate: TestRestTemplate
 
 	@LocalServerPort
-	private lateinit var port: Integer
+	private val port: Int = -1
 
 	@Value("\${api.prefix}")
 	private val apiPrefix = ""
 
 	@Test
 	fun authentication() {
-		val url = createAuthUrl(port.toInt(), "foo", "bar")
+		val url = createAuthUrl(port, "foo", "bar")
 
 		val response = restTemplate.postForEntity(url, null, String::class.java)
 		assertEquals(HttpStatus.OK, response.statusCode)
@@ -76,7 +76,7 @@ class AuthIT {
 	fun tokenRefresh() {
 		val refresh_token = requestToken().second
 
-		val url = createTokenRefreshUrl(port.toInt(), refresh_token)
+		val url = createTokenRefreshUrl(port, refresh_token)
 
 		val e = restTemplate.postForEntity(url, null, String::class.java)
 		val tokenMap = mapper.readValue(e.body, Map::class.java)
@@ -98,7 +98,7 @@ class AuthIT {
 		headers.add("Authorization", basicAuthHeader())
 		val request = HttpEntity<Void>(headers)
 
-		val response = restTemplate.exchange(createTokenCheckURL(port.toInt(), access_token),
+		val response = restTemplate.exchange(createTokenCheckURL(port, access_token),
 			HttpMethod.GET, request, String::class.java)
 		assertEquals(HttpStatus.OK, response.statusCode)
 	}
@@ -114,7 +114,7 @@ class AuthIT {
 	}
 
 	private fun requestToken(): Pair<String, String> {
-		val url = createAuthUrl(port.toInt(), "foo", "bar")
+		val url = createAuthUrl(port, "foo", "bar")
 
 		val e = restTemplate.postForEntity(url, null, String::class.java)
 		val tokenMap = mapper.readValue(e.body, Map::class.java)

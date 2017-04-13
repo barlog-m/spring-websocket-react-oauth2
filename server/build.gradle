@@ -3,7 +3,7 @@ buildscript {
 		kotlinVer = '1.1.1'
 		springBootVer = '1.5.2.RELEASE'
 		propdepsPluginVer = '0.0.7'
-		kotlinLoggingVer = '1.4.2'
+		kotlinLoggingVer = '1.4.4'
 		websocketApiVer = '1.1'
 		apacheHttpClientVer = '4.5.3'
 		jsonPathVer = '2.2.0'

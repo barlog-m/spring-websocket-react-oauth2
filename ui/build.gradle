@@ -37,7 +37,7 @@ task yarnBuild(type: YarnTask) {
 build.dependsOn(yarnBuild)
 
 node {
-	version = '7.6.0'
-	yarnVersion = '0.21.3'
+	version = '7.8.0'
+	yarnVersion = '0.22.0'
 	download = true
 }

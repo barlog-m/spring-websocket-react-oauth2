@@ -36,7 +36,7 @@ class MessagesIT {
 	private val wsPrefix = ""
 
 	@LocalServerPort
-	private lateinit var port: Integer
+	private val port: Int = -1
 
 	private lateinit var token: String
 
