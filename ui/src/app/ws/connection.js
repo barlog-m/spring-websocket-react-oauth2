@@ -1,4 +1,5 @@
-import React, {PropTypes, Component} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import {connect} from "react-redux";
 
 import ConnectionCheckWorker from "worker-loader?name=js/connection-check.[hash].js!./worker-connection-check.js";
@@ -74,7 +75,7 @@ class Connection extends Component {
 	processData(data) {
 		switch (data[0]) {
 			case dataTypes.MESSAGE:
-				console.debug("Connection->processData deal state:", data[1]);
+				console.debug("Connection->processData message", data[1]);
 				this.props.addMessage(data[1]);
 				break;
 		}

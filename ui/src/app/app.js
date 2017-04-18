@@ -1,9 +1,10 @@
-import React, {PropTypes, Component} from "react";
+import React from "react";
+import PropTypes from "prop-types";
 import {connect} from "react-redux";
 
 import Spinner from "./components/spinner";
 import Error from "./containers/error";
-import Menu from "./menu/menu";
+import MainMenu from "./menu/main";
 
 import Connection from "./ws/connection";
 
@@ -12,7 +13,7 @@ const App = props => (
 		<Connection/>
 		<Spinner visible={props.busy}/>
 		<Error/>
-		<Menu/>
+		<MainMenu/>
 		{props.children}
 	</div>
 );

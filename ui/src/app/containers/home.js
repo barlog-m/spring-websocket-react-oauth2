@@ -1,9 +1,12 @@
-import React, {Component, PropTypes} from "react";
+import React from "react";
+import PropTypes from "prop-types";
 import {connect} from "react-redux";
 
 const Home = props => (
 	<div className="container-fluid">
-		<center><h3>{props.greetingMessage}</h3></center>
+		<div style={{textAlign: "center"}}>
+			<h3>{props.greetingMessage}</h3>
+		</div>
 	</div>
 );
 
