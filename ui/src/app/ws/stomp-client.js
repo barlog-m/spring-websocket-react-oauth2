@@ -93,8 +93,8 @@ class StompClient {
 		console.debug("StompClient: prepare url with token", this.token);
 		console.debug("StompClient: prepare url for host", this.host);
 
-		//this.url = `ws://localhost:8081/ws/v1/foo?access_token=${this.token}`;
-		this.url = `ws://${this.host}/ws/v1/foo?access_token=${this.token}`;
+		const ws =  (process.env.NODE_ENV === "development") ? "ws" : "wss";
+		this.url = `${ws}://${this.host}/ws/v1/deals?access_token=${this.token}`;
 
 		console.debug("StompClient: url", this.url);
 	}
