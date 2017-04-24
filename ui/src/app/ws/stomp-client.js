@@ -27,9 +27,10 @@ class StompClient {
 		this.connection = connectionState.LOST;
 	}
 
-	connect(host, access_token) {
+	connect(host, protocol, access_token) {
 		this.onConnectionInProgress();
 		this.host = host;
+		this.protocol = protocol;
 		this.token = access_token;
 
 		backoff(
@@ -92,9 +93,10 @@ class StompClient {
 	prepareUrl() {
 		console.debug("StompClient: prepare url with token", this.token);
 		console.debug("StompClient: prepare url for host", this.host);
+		console.debug("StompClient: prepare url with protocol", this.protocol);
 
-		const ws =  (process.env.NODE_ENV === "development") ? "ws" : "wss";
-		this.url = `${ws}://${this.host}/ws/v1/deals?access_token=${this.token}`;
+		const ws =  (this.protocol === "http:") ? "ws" : "wss";
+		this.url = `${ws}://${this.host}/ws/v1/foo?access_token=${this.token}`;
 
 		console.debug("StompClient: url", this.url);
 	}

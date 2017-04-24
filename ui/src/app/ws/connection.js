@@ -86,8 +86,12 @@ class Connection extends Component {
 		tokenUtils.validateToken()
 			.then(access_token => {
 				console.debug("Connection->connect: token refreshed");
-				this.messagesWorker.postMessage(
-					[stompMessageTypes.CONNECT, window.location.host, access_token]);
+				this.messagesWorker.postMessage([
+						stompMessageTypes.CONNECT,
+						window.location.host,
+						window.location.protocol,
+						access_token
+					]);
 			})
 			.catch(error => {
 				console.debug("Connection->connect: error", error);

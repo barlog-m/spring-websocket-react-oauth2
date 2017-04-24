@@ -33,7 +33,7 @@ onmessage = (e) => {
 	console.debug("MessagesWorker:", e.data[0]);
 	switch (e.data[0]) {
 		case types.CONNECT:
-			messagesReceiver.connect(e.data[1], e.data[2]);
+			messagesReceiver.connect(e.data[1], e.data[2], e.data[3]);
 			break;
 		case types.DISCONNECT:
 			messagesReceiver.disconnectStomp();
