@@ -1,6 +1,2 @@
-spring:
-  output.ansi.enabled: never
-
-logging:
-  level:
-    root: WARN
+spring.output.ansi.enabled: never
+logging.level.root: WARN
