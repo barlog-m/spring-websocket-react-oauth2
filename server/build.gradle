@@ -114,3 +114,5 @@ docker() {
 	])
 	pull true
 }
+
+task stage(dependsOn: ['clean'])
