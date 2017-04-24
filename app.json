@@ -1,0 +1,5 @@
+{
+	"name": "spring-websocket-react-oauth2",
+	"description": "Spring Boot, Web Sockets & OAuth2 example",
+	"image": "heroku/gradle"
+}
