@@ -11,4 +11,5 @@ EXPOSE $PORT
 
 CMD java $JAVA_OPTS \
 	-Djava.security.egd=file:/dev/./urandom \
-	-jar /app.jar
+	-jar /app.jar \
+	--server.port=$PORT

@@ -1,48 +1,59 @@
 buildscript {
 	ext {
-		kotlinVer = '1.1.2-3'
-		springBootVer = '1.5.3.RELEASE'
-		propdepsPluginVer = '0.0.7'
+		kotlinVer = '1.1.2-5'
+		springBootVer = '1.5.4.RELEASE'
 		kotlinLoggingVer = '1.4.4'
 		websocketApiVer = '1.1'
 		apacheHttpClientVer = '4.5.3'
 		jsonPathVer = '2.2.0'
-		okHttpVer = '3.7.0'
+		okHttpVer = '3.8.0'
+
+		propdepsPluginVer = '0.0.10.RELEASE'
+		versionPluginVer = '0.15.0'
+		dockerPluginVer = '0.13.0'
 	}
 
 	repositories {
 		jcenter()
+		maven { url "https://plugins.gradle.org/m2/" }
 		maven { url 'http://repo.spring.io/plugins-release' }
 	}
 	dependencies {
 		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVer"
 		classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVer"
-		classpath "org.springframework.build.gradle:propdeps-plugin:$propdepsPluginVer"
+		classpath "io.spring.gradle:propdeps-plugin:$propdepsPluginVer"
+		// gradle dependencyUpdates -Drevision=release
+		classpath "com.github.ben-manes:gradle-versions-plugin:$versionPluginVer"
+		classpath "gradle.plugin.com.palantir.gradle.docker:gradle-docker:$dockerPluginVer"
 	}
 }
 
-plugins {
-	// gradle dependencyUpdates -Drevision=release
-	id 'com.github.ben-manes.versions' version '0.14.0'
-	id 'com.palantir.docker' version '0.13.0'
-}
-
-apply plugin: 'kotlin'
+apply plugin: 'java'
 apply plugin: 'application'
 apply plugin: 'idea'
+apply plugin: 'org.jetbrains.kotlin.jvm'
+apply plugin: 'org.jetbrains.kotlin.kapt'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'propdeps'
-apply plugin: 'propdeps-maven'
 apply plugin: 'propdeps-idea'
+apply plugin: 'com.github.ben-manes.versions'
+apply plugin: 'com.palantir.docker'
 
 group = 'app'
 version = '0.1-SNAPSHOT'
 
 mainClassName = 'li.barlog.app.AppKt'
 
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
 compileKotlin {
 	kotlinOptions.jvmTarget = "1.8"
+}
+
+sourceSets {
+	main.java.srcDirs += [file("$buildDir/generated/source/kapt/main")]
 }
 
 repositories {
@@ -81,6 +92,7 @@ dependencies {
 	testCompile "org.apache.httpcomponents:httpclient:$apacheHttpClientVer"
 	testCompile "com.squareup.okhttp3:okhttp:$okHttpVer"
 
+	kapt 'org.springframework.boot:spring-boot-configuration-processor'
 	optional 'org.springframework.boot:spring-boot-configuration-processor'
 }
 

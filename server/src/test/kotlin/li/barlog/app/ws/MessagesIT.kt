@@ -95,7 +95,7 @@ class MessagesIT {
 			.build()
 		val response = client.newCall(request).execute()
 
-		val tokenMap = mapper.readValue(response.body().string(), Map::class.java)
+		val tokenMap = mapper.readValue(response.body()?.string(), Map::class.java)
 		val access_token = tokenMap["access_token"].toString()
 		val refresh_token = tokenMap["refresh_token"].toString()
 		return Pair(access_token, refresh_token)
