@@ -1,11 +1,11 @@
-import global from "./global";
+import app from "./app";
 import user from "./user";
 import home from "./home";
 import messages from "./messages";
 import connection from "./connection";
 
 export default {
-	global,
+	app,
 	user,
 	connection,
 	home,

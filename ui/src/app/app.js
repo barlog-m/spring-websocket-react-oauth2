@@ -1,8 +1,7 @@
 import React from "react";
-import PropTypes from "prop-types";
 import {connect} from "react-redux";
 
-import Spinner from "./components/spinner";
+import Spinner from "./containers/spinner";
 import Error from "./containers/error";
 import MainMenu from "./menu/main";
 
@@ -11,20 +10,14 @@ import Connection from "./ws/connection";
 const App = props => (
 	<div>
 		<Connection/>
-		<Spinner visible={props.busy}/>
+		<Spinner/>
 		<Error/>
 		<MainMenu/>
 		{props.children}
 	</div>
 );
 
-App.propTypes = {
-	busy: PropTypes.bool.isRequired
-};
-
-const mapStateToProps = state => ({
-	busy: state.global.busy
-});
+const mapStateToProps = state => ({});
 
 const mapDispatchToProps = dispatch => ({});
 

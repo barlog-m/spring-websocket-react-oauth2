@@ -6,17 +6,20 @@
 	],
 	"parserOptions": {
 		"ecmaFeatures": {
-			"jsx": true
-		}
+			"jsx": true,
+			"modules": true,
+			"spread" : true
+		},
+		"sourceType": "module"
 	},
 	"env": {
 		"es6": true,
 		"browser": true,
 		"amd": true,
-    	"mocha": true
-		},
+		"mocha": true
+	},
 	"rules": {
-        "linebreak-style": ["error", "unix"],
+		"linebreak-style": ["error", "unix"],
 		"semi": ["error", "always"],
 		"quotes": ["error", "double"],
 		"no-console": 0,

@@ -1,5 +1,4 @@
 import "./css/app.css";
-import "./css/bootstrap.css";
 
 import "react-hot-loader/patch";
 import "webpack/hot/only-dev-server";
@@ -7,18 +6,21 @@ import "webpack-dev-server/client?http://localhost:8080";
 
 import React from "react";
 import {render} from "react-dom";
-import {createStore, combineReducers, applyMiddleware, compose} from "redux";
+import {
+	createStore,
+	combineReducers,
+	applyMiddleware,
+	compose
+} from "redux";
 import {Provider} from "react-redux";
 import thunkMiddleware from "redux-thunk";
 
-import Router from "react-router/lib/Router";
-import browserHistory from "react-router/lib/browserHistory";
+import {Router, browserHistory} from "react-router";
 import {
 	syncHistoryWithStore,
 	routerReducer,
 	routerMiddleware
 } from "react-router-redux";
-
 import reduxLogger from "redux-logger";
 import {AppContainer} from "react-hot-loader";
 

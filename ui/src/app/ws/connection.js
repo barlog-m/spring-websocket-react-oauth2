@@ -1,15 +1,14 @@
 import React, {Component} from "react";
-import PropTypes from "prop-types";
 import {connect} from "react-redux";
 
 import ConnectionCheckWorker from "worker-loader?name=js/connection-check.[hash].js!./worker-connection-check.js";
 import StompMessagesWorker from "worker-loader?name=js/stomp-messages.[hash].js!./worker-stomp-messages.js";
 import * as connectionActions from "../actions/connection";
 import * as messagesActions from "../actions/messages";
-import * as authActions from "../actions/auth";
+import * as appActions from "../actions/app";
 import * as stompMessageTypes from "./stomp-message-types";
 import * as dataTypes from "./stomp-data-types";
-import * as tokenUtils from "../token";
+import * as tokenUtils from "../token/token";
 
 import * as connectionState from "./connection-state";
 
@@ -87,15 +86,18 @@ class Connection extends Component {
 			.then(access_token => {
 				console.debug("Connection->connect: token refreshed");
 				this.messagesWorker.postMessage([
-						stompMessageTypes.CONNECT,
-						window.location.host,
-						window.location.protocol,
-						access_token
-					]);
+					stompMessageTypes.CONNECT,
+					window.location.host,
+					window.location.protocol,
+					access_token
+				]);
 			})
 			.catch(error => {
 				console.debug("Connection->connect: error", error);
-				this.props.logOut();
+
+				if (error) {
+					this.props.error(error);
+				}
 			});
 	}
 
@@ -109,14 +111,6 @@ class Connection extends Component {
 	}
 }
 
-Connection.propTypes = {
-	connection: PropTypes.string.isRequired,
-	setConnectionInProgress: PropTypes.func.isRequired,
-	setConnectionEstablished: PropTypes.func.isRequired,
-	setConnectionLost: PropTypes.func.isRequired,
-	addMessage: PropTypes.func.isRequired
-};
-
 const mapStateToProps = state => ({
 	connection: state.connection,
 	isAuthenticated: state.user.isAuthenticated
@@ -126,8 +120,8 @@ const mapDispatchToProps = dispatch => ({
 	setConnectionInProgress: () => dispatch(connectionActions.connectionInProgress()),
 	setConnectionEstablished: () => dispatch(connectionActions.connectionEstablished()),
 	setConnectionLost: () => dispatch(connectionActions.connectionLost()),
-	addMessage: (r) => dispatch(messagesActions.addMessage(r)),
-	logOut: () => dispatch(authActions.doLogOut())
+	addMessage: message => dispatch(messagesActions.addMessage(message)),
+	error: error => dispatch(appActions.error(error))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Connection);
