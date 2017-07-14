@@ -43,6 +43,7 @@
 	},
 	"dependencies": {
 		"axios": "0.16.2",
+		"bootstrap": "3.3.7",
 		"jwt-decode": "2.2.0",
 		"lodash.get": "4.4.2",
 		"lodash.isempty": "4.4.0",

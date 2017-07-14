@@ -1,4 +1,6 @@
+import "bootstrap/dist/css/bootstrap.css";
 import "./css/app.css";
+import "./css/bootstrap.css";
 
 import "react-hot-loader/patch";
 import "webpack/hot/only-dev-server";
