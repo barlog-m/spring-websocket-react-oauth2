@@ -8,11 +8,11 @@ Necessary plugins for Google Chrome
 
 [Flux Standard Action](https://github.com/acdlite/flux-standard-action)
 
-* `yarn` — download dependencies
-* `yarn run start` — run development server
-* `yarn run mock` — run development server with mocks
-* `yarn run test` — tests
-* `yarn run lint` — linter
-* `yarn run build` — build
-* `yarn run clean` — clean
-* `yarn run rm` — clean and delete yarn_modules
+* `npm install` — download dependencies
+* `npm start` — run development server
+* `npm run mock` — run development server with mocks
+* `npm test` — tests
+* `npm run lint` — linter
+* `npm run build` — build
+* `npm run clean` — clean
+* `npm run rm` — clean and delete yarn_modules
