@@ -63,7 +63,7 @@ class MessagesIT {
 		assertEquals(401, response.code())
 	}
 
-	fun connect() = run {
+	private fun connect() = run {
 		val future = CompletableFuture<Response>()
 		val client = OkHttpClient()
 
@@ -72,7 +72,7 @@ class MessagesIT {
 			.build()
 
 		val listener = object : WebSocketListener() {
-			override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response) {
+			override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
 				client.dispatcher().executorService().shutdown()
 				future.complete(response)
 			}
@@ -88,7 +88,7 @@ class MessagesIT {
 
 	private fun requestToken(): Pair<String, String> {
 		val client = OkHttpClient()
-		val uri = createAuthUrl(port.toInt(), "user", "password")
+		val uri = createAuthUrl(port, "user", "password")
 		val request = Request.Builder()
 			.url(uri.toURL())
 			.post(RequestBody.create(null, byteArrayOf()))

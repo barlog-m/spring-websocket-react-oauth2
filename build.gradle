@@ -1,8 +1,9 @@
 allprojects {
-	group 'websocket-react'
+	group 'li.barlog.websocket-react'
 	version '0.1-SNAPSHOT'
 }
 
-wrapper {
-	gradleVersion '4.0.2'
+task wrapper(type: Wrapper) {
+	gradleVersion = '4.3'
+	distributionType = Wrapper.DistributionType.ALL
 }
